@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  app:
+    image: 'jc21/nginx-proxy-manager:2.11.1'
+    restart: unless-stopped
+    ports:
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    volumes:
+      - data:/data
+      - le:/etc/letsencrypt
+volumes:
+  data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/nginx_proxy_manager_data"
+  le:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/nginx_proxy_manager_le"
