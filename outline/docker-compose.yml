@@ -11,11 +11,13 @@ services:
       - DATABASE_CONNECTION_POOL_MIN=
       - DATABASE_CONNECTION_POOL_MAX=
       - REDIS_URL=redis://${REDIS_HOST}:6379
-      - URL=http://192.168.178.137:5008
+      - URL=https://outline.trigx.trading
       - PORT=5008
       - FILE_STORAGE=local
       - FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
       - PGSSLMODE=disable
+      - DEBUG=http
+      - LOG_LEVEL=http
     ports:
       - "5008:3000"
     volumes:
@@ -48,6 +50,27 @@ services:
       POSTGRES_PASSWORD: '${POSTGRES_PASS}'
       POSTGRES_DB: 'outline'
 
+  https-portal:
+    image: steveltn/https-portal
+    ports:
+      - '80:80'
+      - '443:443'
+    links:
+      - outline
+    restart: always
+    volumes:
+      - https-portal-data:/var/lib/https-portal
+    healthcheck:
+      test: ["CMD", "service", "nginx", "status"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    environment:
+      DOMAINS: 'outline.trigx.trading -> http://outline:5003'
+      STAGE: 'production'
+      WEBSOCKET: 'true'
+      CLIENT_MAX_BODY_SIZE: '0'
+
 volumes:
   storage-data:
     driver: local
@@ -61,3 +84,9 @@ volumes:
       type: "nfs"
       o: "nfsvers=4,addr=${SHAREIP},rw"
       device: ":${SHAREFOLDER}/outline_db"
+  https-portal-data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/outline_portal"
