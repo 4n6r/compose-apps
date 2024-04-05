@@ -1,0 +1,67 @@
+version: "3.2"
+services:
+
+  outline:
+    image: docker.getoutline.com/outlinewiki/outline:0.75.2
+    environment:
+      - NODE_ENV=production
+      - SECRET_KEY=${SECRET_KEY}
+      - UTILS_SECRET=${UTILS_SECRET}
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASS}@localhost:5432/outline
+      - DATABASE_CONNECTION_POOL_MIN=
+      - DATABASE_CONNECTION_POOL_MAX=
+      - REDIS_URL=redis://localhost:6379
+      - URL=outline.trigx.trading
+      - PORT=5008
+      - FILE_STORAGE=local
+      - FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
+    ports:
+      - "5008:3000"
+    volumes:
+      - storage-data:/var/lib/outline/data
+    depends_on:
+      - postgres
+      - redis
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis.conf:/redis.conf
+    command: ["redis-server", "/redis.conf"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    volumes:
+      - database-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready -d outline -U user"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    environment:
+      POSTGRES_USER: '${POSTGRES_USER}'
+      POSTGRES_PASSWORD: '${POSTGRES_PASS}'
+      POSTGRES_DB: 'outline'
+
+volumes:
+  storage-data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/outline_storage"
+  database-data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/outline_db"
