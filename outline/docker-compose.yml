@@ -52,7 +52,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "nfsvers=4,addr=${ },rw"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
       device: ":${SHAREFOLDER}/outline_storage"
   database-data:
     driver: local
