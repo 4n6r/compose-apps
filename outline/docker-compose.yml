@@ -11,7 +11,7 @@ services:
       - DATABASE_CONNECTION_POOL_MIN=
       - DATABASE_CONNECTION_POOL_MAX=
       - REDIS_URL=redis://${REDIS_HOST}:6379
-      - URL=outline.trigx.trading
+      - URL=https://outline.trigx.trading
       - PORT=5008
       - FILE_STORAGE=local
       - FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
