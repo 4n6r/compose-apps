@@ -7,10 +7,10 @@ services:
       - NODE_ENV=production
       - SECRET_KEY=${SECRET_KEY}
       - UTILS_SECRET=${UTILS_SECRET}
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASS}@localhost:5432/outline
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASS}@${POSTGRES_HOST}:5432/outline
       - DATABASE_CONNECTION_POOL_MIN=
       - DATABASE_CONNECTION_POOL_MAX=
-      - REDIS_URL=redis://localhost:6379
+      - REDIS_URL=redis://${REDIS_HOST}:6379
       - URL=outline.trigx.trading
       - PORT=5008
       - FILE_STORAGE=local
@@ -42,11 +42,6 @@ services:
       - "5432:5432"
     volumes:
       - database-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD", "pg_isready -d outline -U user"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
     environment:
       POSTGRES_USER: '${POSTGRES_USER}'
       POSTGRES_PASSWORD: '${POSTGRES_PASS}'
@@ -57,7 +52,7 @@ volumes:
     driver: local
     driver_opts:
       type: "nfs"
-      o: "nfsvers=4,addr=${SHAREIP},rw"
+      o: "nfsvers=4,addr=${ },rw"
       device: ":${SHAREFOLDER}/outline_storage"
   database-data:
     driver: local
