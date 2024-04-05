@@ -15,6 +15,7 @@ services:
       - PORT=5008
       - FILE_STORAGE=local
       - FILE_STORAGE_LOCAL_ROOT_DIR=/var/lib/outline/data
+      - PGSSLMODE=disable
     ports:
       - "5008:3000"
     volumes:
