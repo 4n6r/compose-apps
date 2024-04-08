@@ -1,0 +1,20 @@
+version: "3"
+services:
+  5etools-docker:
+    container_name: 5etools-docker
+    image: jafner/5etools-docker
+    volumes:
+      - 5e_tools_data:/usr/local/apache2/htdocs
+    ports:
+     - 3746:80/tcp
+    environment:
+     - IMG=TRUE # Set to TRUE to pull images from https://github.com/5etools-mirror-2/5etools-img (as a Git submodule)
+     #- OFFLINE_MODE=TRUE # Optional. Expects "TRUE" or "FALSE". Disables checking for new updates.
+
+volumes:
+  5e_tools_data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/5e_tools"
