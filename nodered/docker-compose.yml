@@ -7,6 +7,8 @@ services:
       - nodered_data:/data
     ports:
      - 1880:1880/tcp
+    environment:
+      - NODE_RED_CREDENTIAL_SECRET=${NODE_RED_CREDENTIAL_SECRET}
 
 volumes:
   nodered_data:
