@@ -16,7 +16,6 @@ services:
     command: tunnel --config /data/config.yml run ${NAME}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./config/hosts:/etc/hosts
       - data:/data
     labels:
       # enbale watchtower updates
