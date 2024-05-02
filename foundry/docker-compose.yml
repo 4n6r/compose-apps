@@ -17,8 +17,3 @@ services:
         protocol: tcp
 volumes:
   foundry_data:
-    driver: local
-    driver_opts:
-      type: "nfs"
-      o: "nfsvers=4,addr=${SHAREIP},rw"
-      device: ":${SHAREFOLDER}/foundry_data"
