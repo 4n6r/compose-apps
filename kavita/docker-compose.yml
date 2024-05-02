@@ -1,6 +1,6 @@
 services:
     kavita:
-        image: jvmilazz0/kavita:0.7.14    # Using the stable branch from the offical repo.
+        image: jvmilazz0/kavita:0.8.1    # Using the stable branch from the offical repo.
         container_name: kavita
         volumes:
             - library:/library
