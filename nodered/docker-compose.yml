@@ -2,7 +2,7 @@ version: "3"
 services:
   5etools-docker:
     container_name: nodered
-    image: nodered/node-red:3.1.9-18
+    image: nodered/node-red:3.1.11-18
     volumes:
       - nodered_data:/data
     ports:
