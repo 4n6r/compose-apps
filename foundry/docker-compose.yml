@@ -3,7 +3,7 @@ version: "3.8"
 
 services:
   foundry:
-    image: felddy/foundryvtt:12.324.0
+    image: felddy/foundryvtt:12.327.0
     hostname: foundry.trigx.trading
     volumes:
       - foundry_data:/data
