@@ -1,0 +1,21 @@
+---
+services:
+  grocy:
+    image: lscr.io/linuxserver/grocy:latest
+    container_name: grocy
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - config:/config
+    ports:
+      - 9283:80
+    restart: unless-stopped
+volumes:
+  config:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "nfsvers=4,addr=${SHAREIP},rw"
+      device: ":${SHAREFOLDER}/grocy_data"
