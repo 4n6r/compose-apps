@@ -3,11 +3,12 @@ services:
     image: traefik
     container_name: traefik
     restart: unless-stopped
+    secrets:
+      - cloudflare_api_token_trigx_trading
     security_opt:
       - no-new-privileges:true
     environment:
       - TZ=Europe/Berlin
-      - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_DNS_API_TOKEN=${CF_DNS_API_TOKEN}
     networks:
       - frontend
@@ -27,3 +28,7 @@ volumes:
 networks:
   frontend:
     name: frontend
+
+secrets:
+  cloudflare_api_token_trigx_trading:
+    external: true
