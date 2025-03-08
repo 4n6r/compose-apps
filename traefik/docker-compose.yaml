@@ -18,7 +18,7 @@ services:
       - 8080:8080 # Dashbaord WebGui
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./traefik.yml:/traefik.yml:ro
+      - ./traefik.yaml:/traefik.yml:ro
       - traefik:/certs
 
 volumes:
